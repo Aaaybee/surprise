@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Valentine Proposal for Preeti</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --rose-50: #fff1f2;
+      --rose-200: #fecdd3;
+      --rose-400: #fb7185;
+      --rose-500: #f43f5e;
+      --rose-600: #e11d48;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fff5f5 0%, #fed7e2 100%);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Floating Hearts */
+    .heart-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.5; }
+      90% { opacity: 0.5; }
+      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -10%;
+      user-select: none;
+      animation: floatUp linear infinite;
+    }
+
+    /* Main Container */
+    #main-view, #celebration-view {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      z-index: 10;
+    }
+
+    #celebration-view {
+      display: none;
+    }
+
+    /* Typography */
+    .title-text {
+      font-weight: 900;
+      color: var(--rose-600);
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+    }
+
+    .dancing-font {
+      font-family: 'Dancing Script', cursive;
+    }
+
+    /* Buttons */
+    .btn-yes {
+      background-color: var(--rose-500);
+      color: white;
+      font-weight: 800;
+      padding: 1rem 3rem;
+      border-radius: 9999px;
+      font-size: 1.5rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 20;
+    }
+
+    .btn-yes:active {
+      transform: scale(0.9);
+    }
+
+    #btn-no {
+      position: fixed;
+      background-color: #e5e7eb;
+      color: #6b7280;
+      font-weight: 700;
+      padding: 0.75rem 2rem;
+      border-radius: 9999px;
+      font-size: 1.125rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transition: all 0.1s ease-out;
+      border: none;
+      cursor: not-allowed;
+      z-index: 100;
+      white-space: nowrap;
+    }
+
+    /* Celebration Elements */
+    .graffiti {
+      position: absolute;
+      font-weight: 900;
+      pointer-events: none;
+      opacity: 0;
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0) rotate(-20deg); opacity: 0; }
+      to { transform: scale(1) rotate(var(--rot)); opacity: 0.4; }
+    }
+
+    .celebration-card {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(8px);
+      padding: 2rem;
+      border-radius: 2rem;
+      border: 4px solid var(--rose-400);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      animation: heartBeat 3s ease-in-out infinite;
+      max-width: 90%;
+    }
+
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    /* Confetti */
+    .confetti {
+      position: absolute;
+      top: -20px;
+      border-radius: 50%;
+      animation: confettiFall linear infinite;
+    }
+
+    @keyframes confettiFall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="heart-bg" id="heart-container"></div>
+
+  <!-- Proposal View -->
+  <div id="main-view">
+    <h1 class="title-text text-4xl md:text-6xl mb-12">
+      PREETI,<br>WILL YOU BE MY VALENTINE?
+    </h1>
+
+    <div class="flex flex-col items-center justify-center gap-8 w-full">
+      <button id="btn-yes" class="btn-yes">YES!</button>
+      <!-- The No button initial position -->
+      <button id="btn-no" style="top: 65%; left: 50%; transform: translateX(-50%);">NO</button>
+    </div>
+
+    <div class="absolute bottom-10 text-rose-400 font-bold animate-bounce">
+      ❤️ Tap YES for a surprise ❤️
+    </div>
+  </div>
+
+  <!-- Celebration View -->
+  <div id="celebration-view">
+    <div id="graffiti-container" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
+    
+    <div class="celebration-card flex flex-col items-center">
+      <h1 class="text-4xl md:text-6xl font-black text-rose-600 mb-6 uppercase tracking-tighter">
+        I KNEW YOU LOVE ME! 💖
+      </h1>
+      
+      <div class="mb-6">
+        <img 
+          src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3g5Y2p1NmV4ZWx5Z3g5Y2p1NmV4ZWx5Z3g5Y2p1NmV4ZWx5Z3g5Y2p1NmV4ZWx5JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/l41lI4bYyXpGZ0G1q/giphy.gif" 
+          alt="Happy Dance"
+          class="rounded-2xl border-4 border-rose-300 shadow-xl w-56 h-56 object-cover"
+        >
+      </div>
+
+      <p class="text-2xl text-rose-500 italic dancing-font font-bold">
+        You've made my heart skip a beat!
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Constants
+    const NO_BUTTON_PADDING = 80;
+    const HEART_COUNT = 30;
+    const GRAFFITI_SYMBOLS = ["💖", "💗", "💘", "💓", "❤️", "XOXO", "LOML", "Preeti + Me"];
+    const GRAFFITI_COLORS = ["#e11d48", "#db2777", "#9333ea", "#2563eb", "#ea580c"];
+
+    // State
+    let graffitiInterval;
+
+    // Elements
+    const btnYes = document.getElementById('btn-yes');
+    const btnNo = document.getElementById('btn-no');
+    const mainView = document.getElementById('main-view');
+    const celebrationView = document.getElementById('celebration-view');
+    const heartContainer = document.getElementById('heart-container');
+    const graffitiContainer = document.getElementById('graffiti-container');
+
+    // Initialization: Generate Floating Hearts
+    function createHearts() {
+      for (let i = 0; i < HEART_COUNT; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerHTML = '❤️';
+        heart.style.left = `${Math.random() * 100}%`;
+        heart.style.fontSize = `${20 + Math.random() * 30}px`;
+        heart.style.animationDuration = `${5 + Math.random() * 10}s`;
+        heart.style.animationDelay = `${Math.random() * 5}s`;
+        heart.style.opacity = 0.1 + Math.random() * 0.4;
+        heartContainer.appendChild(heart);
+      }
+    }
+
+    // Logic: Move 'NO' Button
+    function moveNoButton(e) {
+      if (e) e.preventDefault();
+      
+      const rect = btnNo.getBoundingClientRect();
+      const maxX = window.innerWidth - rect.width - NO_BUTTON_PADDING;
+      const maxY = window.innerHeight - rect.height - NO_BUTTON_PADDING;
+
+      let newX, newY;
+      const curX = rect.left;
+      const curY = rect.top;
+
+      // Ensure it moves a minimum distance
+      do {
+        newX = Math.max(NO_BUTTON_PADDING / 2, Math.floor(Math.random() * maxX));
+        newY = Math.max(NO_BUTTON_PADDING / 2, Math.floor(Math.random() * maxY));
+      } while (Math.abs(newX - curX) < 150 && Math.abs(newY - curY) < 150);
+
+      btnNo.style.left = `${newX}px`;
+      btnNo.style.top = `${newY}px`;
+      btnNo.style.transform = 'none'; // Remove initial centering transform
+    }
+
+    // Logic: Trigger Celebration
+    function handleYes() {
+      mainView.style.display = 'none';
+      celebrationView.style.display = 'flex';
+      btnNo.style.display = 'none';
+      
+      startCelebration();
+    }
+
+    function startCelebration() {
+      // Create initial burst of graffiti
+      for(let i = 0; i < 15; i++) createGraffiti();
+
+      // Continuous graffiti creation
+      graffitiInterval = setInterval(createGraffiti, 250);
+
+      // Add falling confetti
+      for(let i = 0; i < 80; i++) createConfetti();
+    }
+
+    function createGraffiti() {
+      const graffiti = document.createElement('div');
+      graffiti.className = 'graffiti';
+      graffiti.innerText = GRAFFITI_SYMBOLS[Math.floor(Math.random() * GRAFFITI_SYMBOLS.length)];
+      graffiti.style.left = `${Math.random() * 90}%`;
+      graffiti.style.top = `${Math.random() * 90}%`;
+      graffiti.style.color = GRAFFITI_COLORS[Math.floor(Math.random() * GRAFFITI_COLORS.length)];
+      graffiti.style.fontSize = `${24 + Math.random() * 24}px`;
+      graffiti.style.setProperty('--rot', `${Math.random() * 360 - 180}deg`);
+      
+      graffitiContainer.appendChild(graffiti);
+
+      // Clean up graffiti to avoid DOM bloating
+      if (graffitiContainer.children.length > 60) {
+        graffitiContainer.removeChild(graffitiContainer.firstChild);
+      }
+    }
+
+    function createConfetti() {
+      const colors = ["#fb7185", "#f472b6", "#e879f9", "#818cf8"];
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.width = `${Math.random() * 10 + 5}px`;
+      confetti.style.height = confetti.style.width;
+      confetti.style.left = `${Math.random() * 100}%`;
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.animationDuration = `${2 + Math.random() * 4}s`;
+      confetti.style.animationDelay = `${Math.random() * 3}s`;
+      document.body.appendChild(confetti);
+    }
+
+    // Event Listeners
+    btnNo.addEventListener('mouseenter', moveNoButton);
+    btnNo.addEventListener('touchstart', moveNoButton);
+    btnNo.addEventListener('click', (e) => {
+      e.preventDefault();
+      moveNoButton();
+    });
+
+    btnYes.addEventListener('click', handleYes);
+
+    // Initial setup
+    createHearts();
+  </script>
+</body>
+</html>
